@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+	<meta charset="UTF-8">
+
+	<title>#092 - Informe de vulnerabilidad</title>
+
+	<link rel="stylesheet" href="vuln.css">
+
+</head>
+
+
+
+<body>
+
+
+
+<section class="main">
+
+	<h1>Informe de vulnerabilidad de sitios web #092</h1>
+
+	<h4>Sujeto: my.sek.es</h4>
+
+	<h4>Autor: <a href="http://twitter.com/margobra8">@margobra8</a></h4>
+
+		<h2>Identificaci&oacute;n del recurso y sus dependencias</h2>
+
+			<p>En primera instancia, es necesario recabar informaci&oacute;n sobre el servicio y las dependencias a las que est&aacute; conectado:</p>
+
+			<div style="overflow-x:auto;">
+
+				<table style="height: 201px;" width="100%">
+
+					<tbody>
+
+						<tr>
+
+							<td>Tipo de recurso</td>
+
+							<td>Aplicaci&oacute;n Web</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Tiene API?</td>
+
+							<td>S&iacute; RESTful, aplicaciones swift/objective-c y Java (android)</td>
+
+						</tr>
+
+						<tr>
+
+							<td>DNS TLD</td>
+
+							<td>sek.es</td>
+
+						</tr>
+
+						<tr>
+
+							<td>CNAME/A del recurso</td>
+
+							<td>my.</td>
+
+						</tr>
+
+						<tr>
+
+							<td>WHOIS Dominio</td>
+
+							<td>sek.es, registrado en godaddy.com</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Suministro DNS</td>
+
+							<td>Por EURODNS S.A., registro el 11-07-1997 para Institucion Sek S.A.</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Direcci&oacute;n IP del TLD</td>
+
+							<td>23.100.50.51</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Direcci&oacute;n IP de la aplicaci&oacute;n web</td>
+
+							<td>23.100.50.51</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Aliases de la aplicaci&oacute;n web</td>
+
+							<td>
+
+								<p>sek-web-mysek.azurewebsites.net</p>
+
+								<p>waws-prod-db3-013.vip.azurewebsites.windows.net</p>
+
+								<p>waws-prod-db3-013.cloudapp.net</p>
+
+								<p>esmadt19001dns.sinix.net</p>
+
+								<p>esbcnl19001dns.sinix.net</p>
+
+							</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Usa la Aplicaci&oacute;n un CDN?</td>
+
+							<td>S&iacute;</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Servicio CDN</td>
+
+							<td>waws-azure (MSFT)</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Es un Servidor VPS?</td>
+
+							<td>No</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Datacenter nativo</td>
+
+							<td>Ireland</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Localizaci&oacute;n de IP</td>
+
+							<td>rima-tde (Red IP MultiAcceso), nic.es / Madrid, Comunidad de</td>
+
+						</tr>
+
+						<tr>
+
+							<td>SSL</td>
+
+							<td>S&iacute;</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Entidad firmante del Certificado SSL</td>
+
+							<td>GoDaddy.com, Inc.</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Tiempo de respuesta de media</td>
+
+							<td>35,832 ms</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+
+			</div>
+
+			<p>Dependencias de la aplicaci&oacute;n:</p>
+
+
+
+			<div style="overflow-x:auto;">
+
+				<table style="height: 22px;" width="100%">
+
+					<tbody>
+
+						<tr>
+
+							<td>Backbone</td>
+
+							<td>node.js</td>
+
+						</tr>
+
+						<tr>
+
+							<td>Framework</td>
+
+							<td>angular.js</td>
+
+						</tr>
+
+						<tr>
+
+							<td>References</td>
+
+							<td>ng-*</td>
+
+						</tr>
+
+						<tr>
+
+							<td>API format</td>
+
+							<td>JSON</td>
+
+						</tr>
+
+						<tr>
+
+							<td>DB Format</td>
+
+							<td>SQL</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+
+			</div>
+
+		<h2>1. Puntos fuertes del servicio</h2>
+
+			<ol>
+
+				<li>El servicio se distribuye por medio de un CDN (Azure), por ello el servicio no est&aacute; centralizado en un solo servidor, aumentando su capacidad de aguantar picos de requests desinteresados o intencionados (DDoS)</li>
+
+				<li>Hace uso de la infraestructura SaaS</li>
+
+				<li>El sitio cuenta con conexi&oacute;n SSL TLSv1.2 en todo momento, que encripta las solicitudes de los formularios de login y los paquetes. Haciendo imposible su intercepci&oacute;n (Comprobado en Wireshark).</li>
+
+			</ol>
+
+		<h2>2. Vulnerabilidades del framework</h2>
+
+			<ol>
+
+				<li>La aplicaci&oacute;n est&aacute; basada en AngularJS y en NodeJS. Estas dos plataformas son conocidas por ser objeto de diversas <a href="https://nodejs.org/en/blog/vulnerability/june-2016-security-releases/" target="_blank">vulnerabilidades </a>que pueden ser explotadas para extraer informaci&oacute;n sensible sobre el sitio.</li>
+
+				<li>La integraci&oacute;n del AngularJS se realiza en views con claves ng-* que se pueden modificar para extracci&oacute;n de datos.</li>
+
+				<li>El sitio es susceptible a <a href="http://blog.portswigger.net/2016/01/xss-without-html-client-side-template.html" target="_blank">vulnerabilidades de XSS</a> que causan que la aplicaci&oacute;n se colapse.</li>
+
+			</ol>
+
+		<h2>3. Vulnerabilidades del host</h2>
+
+			<ol>
+
+				<li>Los scripts, locales, views y models se pueden ver accediendo a diferentes directorios de la aplicaci&oacute;n de forma <strong>p&uacute;blica</strong>:<br />
+
+				<ol>
+
+					<li><a href="http://my.sek.es/app">http://my.sek.es/app</a></li>
+
+					<li><a href="http://my.sek.es/scripts">http://my.sek.es/scripts</a></li>
+
+					<li><a href="https://sek-web-mysek.azurewebsites.net/app">https://sek-web-mysek.azurewebsites.net/app</a></li>
+
+					<li><a href="https://sek-web-mysek.azurewebsites.net/scripts">https://sek-web-mysek.azurewebsites.net/scripts</a></li>
+
+				</ol>
+
+				</li>
+
+				<li>Estos archivos no est&aacute;n encriptados y dan a conocer la estructura del sitio dando a lugar a un posible uso malintencionado del servicio <em>Ver Fig 1, 2</em></li>
+
+			</ol>
+
+		<h2>4. Tests realizados</h2>
+
+			<ul>
+
+				<li>La aplicaci&oacute;n ha sido v&iacute;ctima de un ataque de stressing el d&iacute;a 6/09/16 (fecha imprecisa).</li>
+
+				<li>Es posible estresar el servicio incluyendo la siguiente l&iacute;nea de c&oacute;digo en la p&aacute;gina principal:
+
+				<ul>
+
+					<li>
+
+					<pre>&lt;body onload=alert('prueba')&gt;</pre><p><em>Ver Fig 3</em></p>
+
+					</li>
+
+				</ul>
+
+				</li>
+
+			</ul>
+
+		<h3><em>Anexo: Im&aacute;genes</em></h3>
+
+			<a href="http://imgur.com/a/Nzt0c" target="_blank" id="imgur">Im&aacute;genes</a>
+
+<p><em>2016-09-06</em></p>
+
+</section>
+
+
+
+</body>
+
+
+
+</html>
+
+
+

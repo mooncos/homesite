@@ -1,0 +1,31 @@
+@import url(//fonts.googleapis.com/css?family=Open+Sans);
+
+html {
+	font-family: 'Open Sans'
+}
+
+body {
+	background-color: #2e2e2e
+}
+
+p {
+	color: white
+}
+
+html, body, #wrapper {
+   height:100%;
+   width: 100%;
+   margin: 0;
+   padding: 0;
+   border: 0;
+}
+
+#wrapper td {
+   vertical-align: middle;
+   text-align: center;
+}
+
+.resize {
+    width: 150px;
+    height: auto;
+}
