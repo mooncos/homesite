@@ -17,7 +17,7 @@ body {
 	text-align: justify;
 }
 
-.main p { 
+.main p, ul, li, ol { 
 	color: #ccc;
 	text-shadow: none;
 }
